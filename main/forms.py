@@ -19,4 +19,4 @@ class ReviewAddForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = '__all__'
-        exclude = ['body', 'user']
+        exclude = ['body', 'user',]

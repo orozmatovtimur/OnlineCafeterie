@@ -1,4 +1,5 @@
 from cart.cart import Cart
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import *
@@ -55,14 +56,20 @@ class IsAdminCheckMixin(UserPassesTestMixin):
         return self.request.user.is_authenticated and self.request.user.is_superuser
 
 
-class DishDetailView(DetailView):
-    model = Dish
-    template_name = 'detail_dish.html'
-    context_object_name = 'dishess'
-    pk_url_kwarg = 'id'
+class SearchListView(ListView):
+    model = Dish # Product.objects.all()
+    template_name = 'products/search.html'
+    context_object_name = 'products'
 
-    def get_success_url(self):
-        return reverse('home')
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # print(self.request.GET)
+        q = self.request.GET.get('q')
+        queryset = queryset.filter(Q(name__icontains=q) |
+                                   Q(description__icontains=q))
+        if not q:
+            return Dish.objects.none()
+        return queryset
 
 
 class DishCreateView(IsAdminCheckMixin, CreateView):
