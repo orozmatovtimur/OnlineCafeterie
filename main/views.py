@@ -92,6 +92,9 @@ class DishUpdateView(IsAdminCheckMixin, UpdateView):
         context['dish_form'] = self.get_form(self.get_form_class())
         return context
 
+    def get_success_url(self):
+        return reverse('home')
+
 
 class DishDeleteView(IsAdminCheckMixin, DeleteView):
     model = Dish
@@ -100,9 +103,6 @@ class DishDeleteView(IsAdminCheckMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('home')
-
-
-
 
 
 @login_required()

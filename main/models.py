@@ -33,7 +33,6 @@ class Dish(models.Model):
 
 
 class Comment(models.Model):
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, related_name='body')
     name = models.CharField(max_length=300)
     body = models.TextField(verbose_name='Описание')
     date_added = models.DateTimeField(auto_now_add=True)
@@ -41,6 +40,6 @@ class Comment(models.Model):
 
     def __str__(self):
         # return f"{self.name} --> {self.body}"
-        return '%s - %s' % (self.dish.title, self.name)
+        return '%s ' % ( self.name)
 
 
