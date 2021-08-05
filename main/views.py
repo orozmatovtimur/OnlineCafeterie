@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 
-
 from main.forms import *
 from main.models import *
 
@@ -147,3 +146,4 @@ def cart_clear(request):
 @login_required()
 def cart_detail(request):
     return render(request, 'cart_detail.html')
+
