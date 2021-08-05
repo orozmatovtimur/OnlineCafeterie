@@ -7,6 +7,7 @@ urlpatterns = [
     path('home/', MainPageView.as_view(), name='home'),
     path('<str:slug>/', DishListView.as_view(), name='list'),
     path('dish/<int:id>/', DishDetailView.as_view(), name='detail'),
+    path('dish/<int:id>/comment', ReviewAdd.as_view(), name='add_comment_url'),
     path("login/", LoginView.as_view(), name="login"),
     path('dish/create/', DishCreateView.as_view(), name='create_dish'),
     path('dish/update/<int:id>/', DishUpdateView.as_view(), name='update_dish'),

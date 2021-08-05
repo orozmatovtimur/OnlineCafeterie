@@ -1,6 +1,8 @@
-
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
+
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -29,18 +31,16 @@ class Dish(models.Model):
         return self.title
 
 
-# class Reviews(models.Model):
-#     """Отзыв"""
-#     email = models.EmailField()
-#     name = models.CharField(max_length=100)
-#     text = models.CharField(max_length=3000)
-#     dish = models.ForeignKey(Dish, verbose_name='Блюдо ', on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return f"{self.name} - {self.dish}"
-#
-#     class Meta:
-#         verbose_name = "Отзыв"
-#         verbose_name_plural = "Отзывы"
+
+class Comment(models.Model):
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, related_name='body')
+    name = models.CharField(max_length=300)
+    body = models.TextField(verbose_name='Описание')
+    date_added = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comment')
+
+    def __str__(self):
+        # return f"{self.name} --> {self.body}"
+        return '%s - %s' % (self.dish.title, self.name)
 
 

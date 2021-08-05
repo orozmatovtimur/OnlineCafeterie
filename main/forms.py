@@ -15,15 +15,8 @@ class UpdateDishForm(forms.ModelForm):
         fields = "__all__"
 
 
-# class ReviewForm(forms.ModelForm):
-#     """Форма отзыва"""
-#     captcha = ReCaptchaField()
-#
-#     class Meta:
-#         model = Reviews
-#         fields = ('name', 'email', 'text', 'captcha')
-#         widgets = {
-#             'name': forms.TextInput(attrs={'class': 'form-control border'}),
-#             'email': forms.EmailField(attrs={'class': 'form-control border'}),
-#             'text': forms.Textarea(attrs={'class': 'form-control border'}),
-#         }
+class ReviewAddForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        exclude = ['body', 'user']

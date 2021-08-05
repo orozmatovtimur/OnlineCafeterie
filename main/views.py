@@ -1,5 +1,5 @@
 from cart.cart import Cart
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import *
 from django.contrib.auth.decorators import login_required
@@ -9,6 +9,19 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 
 from main.forms import *
 from main.models import *
+
+
+class ReviewAdd(CreateView):
+    model = Comment
+    template_name = 'add_comment.html'
+    form_class = ReviewAddForm
+
+    def form_valid(self, form):
+        form.User = self.kwargs['id']
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('home', kwargs={'id': self.kwargs['id']})
 
 
 class MainPageView(ListView):
@@ -21,6 +34,7 @@ class DishListView(ListView):
     model = Dish
     template_name = 'list_dish.html'
     context_object_name = 'dishes'
+    paginate_by = 1
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -87,23 +101,8 @@ class DishDeleteView(IsAdminCheckMixin, DeleteView):
     def get_success_url(self):
         return reverse('home')
 
-#
-# class AddReview(View):
-#
-#     def dish(self, request, pk):
-#         form = ReviewForm(request.POST)
-#         dish = Dish.objects.get(id=pk)
-#         if form.is_valid():
-#             form = form.save(commit=False)
-#             form.dish = dish
-#             form.save()
-#         return redirect(dish.get_absolute_url())
 
 
-@login_required()
-def cart_add(request, id):
-    cart = Cart(request)
-    product = Dish.objects.get(id=id)
 
 
 @login_required()
@@ -147,10 +146,4 @@ def cart_clear(request):
 
 @login_required()
 def cart_detail(request):
-    return render(request, 'cart/cart_detail.html')
-
-
-@login_required()
-def cart_detail(request):
-    return render(request, 'cart/cart_detail.html')
-    return render(request, 'cart/cart_detail.html')
+    return render(request, 'cart_detail.html')
