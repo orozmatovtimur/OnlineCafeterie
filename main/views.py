@@ -90,7 +90,7 @@ class ProductDeleteView(IsAdminCheckMixin, DeleteView):
 
 
 class SearchListView(ListView):
-    model = Product # Product.objects.all()
+    model = Product   # Product.objects.all()
     template_name = 'search_results.html'
     context_object_name = 'products'
 
